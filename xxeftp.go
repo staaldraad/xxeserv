@@ -39,8 +39,8 @@ func genCert() {
 		SerialNumber: s,
 		Subject: pkix.Name{
 			Country:      []string{"ZA"},
-			Organization: []string{"SensePost"},
-			CommonName:   "*.sensepost.com",
+			Organization: []string{"Staaldraad"},
+			CommonName:   "*.draad.io",
 		},
 		NotBefore:             time.Now(),
 		NotAfter:              time.Now().AddDate(10, 0, 0),
