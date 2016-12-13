@@ -5,6 +5,8 @@ Basic FTP server to receive payloads from instances of XXE. This will record all
 
 Has a unique "uno port" option, where everything is served from one port. This means you can serve HTTP/HTTPS/FTP over a single port. When a connection is received, the server will work out which protocol was requested, and handle it accordingly. This is not flawless, but works in most cases.
 
+For more info, see the blog-post: [https://staaldraad.github.io/security/xxe/2016/12/11/xxeftp/](https://staaldraad.github.io/security/xxe/2016/12/11/xxeftp/)
+
 ## Usage
 
 Built for Linux, so use
