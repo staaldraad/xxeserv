@@ -113,9 +113,12 @@ func parseConn(conn *net.TCPConn) {
 
 		if buf.Len() > 4 {
 			cmd := string(buf.Bytes()[:4])
-			if cmd == "USER" || cmd == "PASS" {
+			if cmd == "USER" {
 				olog.Printf("%s: %s", cmd, string(buf.Bytes()[4:]))
 				writer.Write([]byte("331 password please - version check\r\n"))
+			} else if cmd == "PASS" {
+				olog.Printf("%s: %s", cmd, string(buf.Bytes()[4:]))
+				writer.Write([]byte("230 User logged in\r\n"))
 			} else if cmd == "QUIT" {
 				writer.Write([]byte("221 Goodbye.\r\n"))
 				break
