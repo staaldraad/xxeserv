@@ -129,7 +129,10 @@ func parseConn(conn *net.TCPConn) {
 				break
 			} else {
 				if string(buf.Bytes()[:3]) == "CWD" {
-					writer.Write([]byte("230 more data please!\r\n"))
+					writer.Write([]byte("250 Directory successfully changed.\r\n"))
+					olog.Printf("/%s", strings.Replace(string(buf.Bytes()[4:]), "\r\n", "", 1))
+				} else if string(buf.Bytes()[:3]) == "PWD" {
+					writer.Write([]byte("257 \"/\" is the current directory\r\n"))
 					olog.Printf("/%s", strings.Replace(string(buf.Bytes()[4:]), "\r\n", "", 1))
 				} else if contains(reserved, string(buf.Bytes()[:4])) == true {
 					writer.Write([]byte("230 more data please!\r\n"))
