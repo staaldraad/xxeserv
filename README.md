@@ -12,7 +12,7 @@ For more info, see the blog-post: [https://staaldraad.github.io/2016/12/11/xxeft
 Built for Linux, so use
 
 ```
-./xxeftp -p 2121
+./xxeserv -p 2121
 ```
 
 There are multiple modes. The server can host both FTP and HTTP, thus making it capable of serving the DTD and receiving the FTP payload.
@@ -20,7 +20,7 @@ There are multiple modes. The server can host both FTP and HTTP, thus making it 
 To start the web-server (off by default) use `-w`
 
 ```
-./xxeftp -w
+./xxeserv -w
 ```
 
 To change the web-port, use `-wp`.
@@ -31,6 +31,23 @@ The DTD is served out of the CWD by default. To change, use `-wd`.
 
 To save the data received via FTP to file, use `-o filename`. The file will be created if it doesn't exist.
 
+```
+./xxeserv --help 
+Usage of ./xxeserv:
+  -o string
+        File location to log to
+  -p int
+        Port to listen on (default 2121)
+  -uno int
+        Global port to listen on (default 5000)
+  -w    Setup web-server for DTDs
+  -wd string
+        Folder to server DTD(s) from (default "./")
+  -wp int
+        Port to serve DTD on (default 2122)
+  -wps int
+        SSL Port to serve DTD on (default 2123)
+```
 
 ## To build:
 
