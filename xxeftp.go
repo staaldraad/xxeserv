@@ -46,9 +46,9 @@ func genCert() {
 		NotAfter:              time.Now().AddDate(10, 0, 0),
 		SubjectKeyId:          []byte{1, 2, 3, 4, 6},
 		BasicConstraintsValid: true,
-		IsCA:        true,
-		ExtKeyUsage: []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
-		KeyUsage:    x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
+		IsCA:                  true,
+		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
+		KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
 	}
 
 	priv, _ := rsa.GenerateKey(rand.Reader, 1024)
@@ -134,7 +134,7 @@ func parseConn(conn *net.TCPConn) {
 				} else if string(buf.Bytes()[:3]) == "PWD" {
 					writer.Write([]byte("257 \"/\" is the current directory\r\n"))
 					olog.Printf("/%s", strings.Replace(string(buf.Bytes()[4:]), "\r\n", "", 1))
-				} else if contains(reserved, string(buf.Bytes()[:4])) == true {
+				} else if contains(reserved, string(buf.Bytes()[:4])) {
 					writer.Write([]byte("230 more data please!\r\n"))
 				} else {
 					writer.Write([]byte("230 more data please!\r\n"))
@@ -246,7 +246,7 @@ func passerby(conn1, conn2 net.Conn, reader bufio.Reader, userreader bool, done 
 	var err error
 	var n int
 	for {
-		if userreader == true {
+		if userreader {
 			data := make([]byte, 256)
 			n, err = reader.Read(data)
 
@@ -287,9 +287,6 @@ func connectInternal(conn net.Conn, port int, reader bufio.Reader) {
 }
 
 func parseUnoConnection(conn net.Conn) {
-	//go connectFTP(conn)
-	//go connectHTTP(conn)
-
 	timeout := make(chan bool, 1)
 	typex := make(chan []byte, 1)
 	conn.SetReadDeadline(time.Now().Add(3 * time.Second))
@@ -301,13 +298,8 @@ func parseUnoConnection(conn net.Conn) {
 	reader := bufio.NewReader(conn)
 	go func() {
 		status, _ := reader.Peek(1)
-		//reader.Reset(reader)
 		typex <- status
 	}()
-
-	//byte[0] == 22 //TLS
-	//byte[0] == //http
-	//byte[0] == //FTP
 
 	select {
 	case <-timeout:
@@ -362,7 +354,7 @@ func main() {
 		logger.Printf("[*] Storing session into the file: %s", *fileLog)
 	}
 
-	if *webEnabledPtr == true {
+	if *webEnabledPtr {
 		serveWeb(*webFolderPtr)
 	}
 	startFTP()
